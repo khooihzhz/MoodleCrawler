@@ -80,8 +80,14 @@ public class Main extends Application {
 
         // STEP 4 : LOGIN
         // Enter User Email and Password Here
+        // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
+
         eMail.sendKeys("<YOUREMAIL>");
         password.sendKeys("<YOURPASSWORD>");
+
+
+
+        // ------ END SCANNER CLASS ------ 
 
         // CLICK LOGIN BUTTON
         WebElement submitButton = driver.findElement(By.id("submitButton"));
