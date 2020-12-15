@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.Scanner;
 
 public class Main extends Application {
 
@@ -71,19 +72,40 @@ public class Main extends Application {
         System.out.println(Title);
 
         // STEP 3 : ENTER USERNAME AND PASSWORD
+        Scanner input = new Scanner(System.in);
+
+        String email = "";
+        String pw = "";
+        String emailPattern = "\\w+\\S+@student.usm.my";
+        String pwPattern = "\\w{8,25}";
+        boolean invalid = true;
+
+        while (invalid) {
+            System.out.println("Username: ");
+            email = input.nextLine();
+            System.out.println("Password: ");
+            pw = input.nextLine();
+
+            if (email.matches(emailPattern) && pw.matches(pwPattern)) {
+                invalid = false;
+            }
+            else {
+                System.out.println("Invalid username or password!");
+            }
+        }
 
         // Find EMAIL TextBox
         WebElement eMail = driver.findElement(By.id("userNameInput"));
 
-        // Find PassWord Textbox
+        // Find PassWord TextBox
         WebElement password = driver.findElement(By.id("passwordInput"));
 
         // STEP 4 : LOGIN
         // Enter User Email and Password Here
         // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
 
-        eMail.sendKeys("<YOUREMAIL>");
-        password.sendKeys("<YOURPASSWORD>");
+        eMail.sendKeys(email);
+        password.sendKeys(pw);
 
 
 
