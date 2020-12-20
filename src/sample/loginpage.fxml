@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" style="-fx-background-color: linear-gradient(to left, #536976, #292e49);" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+      <Circle layoutX="35.0" layoutY="242.0" radius="48.0" stroke="#e8dcdc00" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.6911111195882161" centerY="0.4694656415750052" radius="0.5">
+               <stops>
+                  <Stop color="#5787b5" />
+                  <Stop color="#0d0a11" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+         <effect>
+            <Glow />
+         </effect>
+      </Circle>
+      <Circle layoutX="358.0" layoutY="168.0" radius="43.0" stroke="#f5f0f000" strokeType="INSIDE">
+         <fill>
+            <RadialGradient centerX="0.2777777989705404" centerY="0.5" radius="0.5">
+               <stops>
+                  <Stop color="#6568a7" />
+                  <Stop color="#141b26" offset="0.9908396946564886" />
+                  <Stop color="#141b26" offset="1.0" />
+               </stops>
+            </RadialGradient>
+         </fill>
+      </Circle>
+        <AnchorPane layoutX="422.0" layoutY="-1.0" prefHeight="506.0" prefWidth="398.0" style="-fx-background-color: #F8F9FB;">
+            <children>
+                <Label layoutX="143.0" layoutY="83.0" prefHeight="43.0" prefWidth="106.0" text="LOGIN" textAlignment="JUSTIFY" textFill="#030303">
+                    <font>
+                        <Font name="Arial Black" size="23.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="stu_email" layoutX="66.0" layoutY="207.0" prefHeight="23.0" prefWidth="242.0" promptText="USM Email" style="-fx-background-radius: 0; -fx-border-color: #213867;">
+               <font>
+                  <Font name="Arial" size="12.0" />
+               </font></TextField>
+                <PasswordField fx:id="stu_password" layoutX="66.0" layoutY="253.0" prefHeight="26.0" prefWidth="241.0" promptText="Password" style="-fx-background-radius: 0; -fx-border-color: #213867;">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets></PasswordField>
+                <AnchorPane layoutX="161.0" layoutY="123.0" prefHeight="6.0" prefWidth="52.0" style="-fx-background-color: #7A85AD;" />
+            <Button fx:id="submitButton" layoutX="114.0" layoutY="314.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #7A85AD; -fx-background-radius: 80;" text="Sign in" textFill="#f8f4f4">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
+               <effect>
+                  <Blend />
+               </effect>
+            </Button>
+            </children>
+        </AnchorPane>
+      <Text fill="#f2ecec" layoutX="24.0" layoutY="192.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To Moodle Crawler" wrappingWidth="411.67108154296875">
+         <font>
+            <Font name="Arial Black" size="22.0" />
+         </font>
+         <effect>
+            <Glow />
+         </effect>
+      </Text>
+      <Text fill="#f0e9e9" layoutX="24.0" layoutY="229.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Download your notes, tutorials and assignments">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Text>
+      <Text fill="#faf5f5" layoutX="24.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="with the easiest way.">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font></Text>
+      <Text fill="#f5efef" layoutX="207.0" layoutY="294.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to continue access">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+      </Text>
+    </children>
+</AnchorPane>
