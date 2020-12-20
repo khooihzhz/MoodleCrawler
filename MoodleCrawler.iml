@@ -10,5 +10,6 @@
     <orderEntry type="library" name="javafx" level="project" />
     <orderEntry type="library" name="htmlunit-driver-2.45.0" level="project" />
     <orderEntry type="library" name="selenium-java-3.141" level="project" />
+    <orderEntry type="library" name="selenium-java" level="project" />
   </component>
 </module>
