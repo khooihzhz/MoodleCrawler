@@ -1,8 +1,109 @@
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.layout.GridPane?>
+<?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<GridPane fx:controller="sample.Controller"
-          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-</GridPane>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <SplitPane dividerPositions="0.5" layoutX="123.0" layoutY="40.0" prefHeight="505.0" prefWidth="771.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(to left, #536976, #292e49);">
+               <children>
+                  <Circle layoutX="40.0" layoutY="252.0" radius="48.0" stroke="#e8dcdc00" strokeType="INSIDE">
+                     <fill>
+                        <RadialGradient centerX="0.6911111195882161" centerY="0.4694656415750052" radius="0.5">
+                           <stops>
+                              <Stop color="#5787b5" />
+                              <Stop color="#0d0a11" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </Circle>
+                  <Circle layoutX="308.0" layoutY="174.0" radius="43.0" stroke="#f5f0f000" strokeType="INSIDE">
+                     <fill>
+                        <RadialGradient centerX="0.2777777989705404" centerY="0.5" radius="0.5">
+                           <stops>
+                              <Stop color="#6568a7" />
+                              <Stop color="#141b26" offset="0.9908396946564886" />
+                              <Stop color="#141b26" offset="1.0" />
+                           </stops>
+                        </RadialGradient>
+                     </fill>
+                  </Circle>
+                  <Text fill="#f2ecec" layoutX="24.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome To Moodle Crawler" wrappingWidth="411.67108154296875">
+                     <font>
+                        <Font name="Arial Black" size="22.0" />
+                     </font>
+                     <effect>
+                        <Glow />
+                     </effect>
+                  </Text>
+                  <Text fill="#f0e9e9" layoutX="24.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Download your notes, tutorials and assignments">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#faf5f5" layoutX="24.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="with the easiest way.">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Text>
+                  <Text fill="#f5efef" layoutX="189.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to continue access">
+                     <font>
+                        <Font name="Arial Bold" size="12.0" />
+                     </font>
+                  </Text>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <Label layoutX="138.0" layoutY="95.0" prefHeight="43.0" prefWidth="106.0" text="LOGIN" textAlignment="JUSTIFY" textFill="#030303">
+                     <font>
+                        <Font name="Arial Black" size="23.0" />
+                     </font>
+                  </Label>
+                  <AnchorPane layoutX="152.0" layoutY="133.0" prefHeight="6.0" prefWidth="52.0" style="-fx-background-color: #7A85AD;" />
+                  <TextField fx:id="stu_email" layoutX="57.0" layoutY="220.0" prefHeight="27.0" prefWidth="241.0" promptText="USM Email" style="-fx-background-radius: 0; -fx-border-color: #213867;">
+                     <font>
+                        <Font name="Arial" size="12.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField fx:id="stu_password" layoutX="57.0" layoutY="269.0" prefHeight="25.0" prefWidth="241.0" promptText="Password" style="-fx-background-radius: 0; -fx-border-color: #213867;">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </PasswordField>
+                  <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #7A85AD; -fx-background-radius: 80;" text="Sign in" textFill="#f8f4f4">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="DEFAULT" />
+                     </cursor>
+                     <effect>
+                        <Blend />
+                     </effect>
+                  </Button>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>
