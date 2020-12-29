@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="javafx">
+  <library name="lib">
     <CLASSES>
       <root url="file://$PATH_TO_FX$" />
     </CLASSES>

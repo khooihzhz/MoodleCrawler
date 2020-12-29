@@ -15,6 +15,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -39,6 +40,7 @@ public class Main extends Application {
 
 
     // Setup Crawler Method
+
     static WebDriver setupCrawler(String SaveDirectory) {
         System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
 
@@ -78,9 +80,10 @@ public class Main extends Application {
         // PROMPT LOGIN
         // STEP 3 : ENTER USERNAME AND PASSWORD
         // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
+        // *** USE getText() IN JAVAFX controller to get user input ***
         Scanner userInput = new Scanner(System.in);
-        String userEmail = "";
-        String userPassword = "";
+        String userEmail;
+        String userPassword;
         System.out.println("Username: ");
         userEmail = userInput.nextLine();
         System.out.println("Password: ");
@@ -92,11 +95,30 @@ public class Main extends Application {
 
         // STEP 4 : LOGIN
         // Enter User Email and Password Here
-
         eMail.sendKeys(userEmail);
         password.sendKeys(userPassword);
         WebElement submitButton = driver.findElement(By.id("submitButton"));
         submitButton.click();
+
+        // CHECK IF ERROR MESSAGE SHOWN OR NOT
+        boolean login = driver.findElement(By.id("errorText")).isDisplayed();
+
+        // LOOP TO GET INPUT AGAIN IF errorText SHOWN
+        while(login){
+
+            System.out.println("Login fail!");
+            System.out.println("Username: ");
+            userEmail = userInput.nextLine();
+            System.out.println("Password: ");
+            userPassword = userInput.nextLine();
+
+            eMail.clear();
+            eMail.sendKeys(userEmail);
+            password.clear();
+            password.sendKeys(userPassword);
+            submitButton.click();
+            login = driver.findElement(By.id("errorText")).isDisplayed();
+        }
 
         // STEP 5 : OBTAIN COOKIE
         moodleCookies = driver.manage().getCookies();
@@ -315,7 +337,7 @@ public class Main extends Application {
 
     public static void main(String[] args)
     {
-        //launch(args);
+        // launch(args);
         getMoodleCookies();
 
         // === IMPLEMENT SELECTION FUNCTION HERE ====

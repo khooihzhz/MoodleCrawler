@@ -16,6 +16,7 @@ package sample;
         import javafx.stage.Stage;
         import java.io.IOException;
 
+
 public class Loginpage extends Application {
 
     @Override
@@ -26,7 +27,6 @@ public class Loginpage extends Application {
             primaryStage.setScene(new Scene(root, 800, 500));
             primaryStage.show();
         }
-
 
     public static void main(String[] args) {
         launch(args);
