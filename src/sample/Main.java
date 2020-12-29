@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
@@ -29,72 +30,110 @@ public class Main extends Application {
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
     }
+
+    // Save Cookie for new Drivers
+    public static Set<Cookie> moodleCookies;
+
+
     // Setup Crawler Method
+    static WebDriver setupCrawler(String SaveDirectory) {
+        System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
 
-   public static WebDriver driver = SetupCrawler();
+        // ----- SET DOWNLOAD PATH -----
+        Map<String, Object> prefs = new HashMap<>();
+        // NAVIGATE TO DOWNLOAD DIRECTORY
+        prefs.put("plugins.always_open_pdf_externally", true);
+        prefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + SaveDirectory);
+        // DISABLE POP UP
+        prefs.put("profile.default_content_settings.popups", 0);
+        ChromeOptions options = new ChromeOptions();
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        options.setExperimentalOption("prefs", prefs);
 
-    public static void main(String[] args) {
-        // GET TO THE MAIN PAGE
+        return new ChromeDriver(options);
+    }
+
+    static void getMoodleCookies() {
+        WebDriver driver = setupCrawler("");
         driver.get("https://elearning.usm.my/sidang2021/");
+        // GET DOWNLOAD LINK
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("a")));
 
-        // STEP 2 : GET LOGIN WEBSITE
-        LoginWebsite();
-
-        // STEP 3 : GET LOGIN INFORMATION AND LOGIN INTO PLACE
-        PromptLogin();
-
-        // WAIT FOR TIME
-        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
-
-        // INITIALIZE LIST
-        List<String> courseList = new ArrayList<>();
-
-        // STEP 4 : GET COURSE LINKS
-        getCourseList(courseList);
-
-        // ----- SCRAPING BEGINS -----
-        // LOOP THROUGH LINKS
-
-        for (String link : courseList) {
-            // DOWNLOAD FILES
-            List<String> listResources = new ArrayList<>();
-            listResources.add("li.activity.assign.modtype_assign");
-            listResources.add("li.activity.resource.modtype_resource");
-            listResources.add("li.activity.folder.modtype_folder");
-
-            // DOWNLOAD
-            for (String resourceType : listResources){
-                driver.get(link);
-                System.out.println("SCRAPING " + driver.getTitle());
-                findLinks(resourceType, link);
+        List<WebElement> loginLinks = driver.findElements(By.tagName("a"));
+        String loginURL = "";
+        for (WebElement link : loginLinks) {
+            if (link.getAttribute("title").equals(" Login")) {    // CHECK HTML PAGE AND CAN KNOW "LOGIN" HAVE THE LINK
+                loginURL = link.getAttribute("href");
             }
-
-            // ARRANGE FILE
         }
+        // STEP 2 :
+        // NAVIGATE TO LOGIN URL
+        driver.get(loginURL);
 
-        /*
-        // TEST FUNCTION for a course
+        // STEP 3:
+        // PROMPT LOGIN
+        // STEP 3 : ENTER USERNAME AND PASSWORD
+        // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
+        Scanner userInput = new Scanner(System.in);
+        String userEmail = "";
+        String userPassword = "";
+        System.out.println("Username: ");
+        userEmail = userInput.nextLine();
+        System.out.println("Password: ");
+        userPassword = userInput.nextLine();
 
-        String courseURL = courseList.get(1);
-        System.out.println(courseURL);
-        List<String> listResources = new ArrayList<>();
-        //listResources.add("li.activity.assign.modtype_assign");
-        //listResources.add("li.activity.resource.modtype_resource");
-        listResources.add("li.activity.folder.modtype_folder");
+        // Find EMAIL and PASSWORD text field
+        WebElement eMail = driver.findElement(By.id("userNameInput"));
+        WebElement password = driver.findElement(By.id("passwordInput"));
 
-        // DOWNLOAD
-        for (String resourceType : listResources){
-            driver.get(courseURL);
-            System.out.println(resourceType);
-            findLinks(resourceType, courseURL);
-        }
-         */
+        // STEP 4 : LOGIN
+        // Enter User Email and Password Here
 
+        eMail.sendKeys(userEmail);
+        password.sendKeys(userPassword);
+        WebElement submitButton = driver.findElement(By.id("submitButton"));
+        submitButton.click();
+
+        // STEP 5 : OBTAIN COOKIE
+        moodleCookies = driver.manage().getCookies();
 
     }
 
+    static void modifyMoodleCookies(WebDriver driver) {
+        driver.get("https://elearning.usm.my/sidang2021/");
+        // REMOVE ALL COOKIES AND ADD NEW ONE
+        driver.manage().deleteAllCookies();
 
-    static void findLinks(String resourceType, String courseLink) {
+        for (Cookie cookie : moodleCookies) {
+            driver.manage().addCookie(cookie);
+        }
+
+        // refresh
+        driver.get("https://elearning.usm.my/sidang2021/");
+    }
+
+    static void getCourseList(List<String> courseList, List<String> courseNameList) {
+        WebDriver driver = setupCrawler("courseList");
+        modifyMoodleCookies(driver);
+        // ----- START FIND COURSE LIST ------
+        List<WebElement> courseLinks = driver.findElements(By.cssSelector("a.courselist_course.scrollable"));
+
+        // STEP 6 : LOOP THROUGH EACH LINK
+        // REMEMBER COURSE LINKS
+        for (WebElement course : courseLinks) {
+            String courseURL = course.getAttribute("href");    // GET COURSE LINK
+            // System.out.println(courseURL);
+            courseList.add(courseURL);
+            // ===== GET COURSE NAME =====
+        }
+    }
+
+    static void findLinks(String resourceType, String courseLink, String courseName) {
+
+        // SETUP CRAWLERS
+        WebDriver driver = setupCrawler(courseName);
+        modifyMoodleCookies(driver);
 
         // declaration of variables
         WebDriverWait wait = new WebDriverWait(driver, 2);
@@ -107,46 +146,38 @@ public class Main extends Application {
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(resourceType)));
             materialsAttributes = driver.findElements(By.cssSelector(resourceType));
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             // do nothing
         }
 
-        if (!materialsAttributes.isEmpty())
-        {
+        if (!materialsAttributes.isEmpty()) {
             for (WebElement tags : materialsAttributes) {
                 try {
                     boolean restricted = false;
-                    if (resourceType.equals("li.activity.assign.modtype_assign"))
-                    {
+                    if (resourceType.equals("li.activity.assign.modtype_assign")) {
                         // if can find this element is restricted
                         // skip it
                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.dimmed.dimmed_text")));
                         List<WebElement> restrictedTags = tags.findElements(By.cssSelector("div.dimmed.dimmed_text"));
-                        if (!restrictedTags.isEmpty())
-                        {
+                        if (!restrictedTags.isEmpty()) {
                             restricted = true;
                         }
                     }
-                    if (!restricted)
-                    {
+                    if (!restricted) {
                         // else if it is not empty find the link
                         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.aalink")));
                         List<WebElement> anchorTags = tags.findElements(By.cssSelector("a.aalink"));
                         // if found elements
-                        if (!anchorTags.isEmpty())
-                        {
-                            for (WebElement anchorTag : anchorTags)
-                            {
+                        if (!anchorTags.isEmpty()) {
+                            for (WebElement anchorTag : anchorTags) {
                                 String fileURL = anchorTag.getAttribute("href");
-                                if (!listLinks.contains(fileURL))
-                                {
+                                if (!listLinks.contains(fileURL)) {
                                     listLinks.add(fileURL);
                                 }
                             }
                         }
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     // do nothing
                 }
             }
@@ -154,8 +185,7 @@ public class Main extends Application {
 
 
         // FIRST WAVE OF LINKS
-        for (String urls : listLinks)
-        {
+        for (String urls : listLinks) {
             //TRY CREATE NEW WINDOWS
             System.out.println(urls);
             driver.get(urls);
@@ -164,50 +194,39 @@ public class Main extends Application {
             List<WebElement> moreDownloadLinks = new ArrayList<>();
 
             // if redirected
-            if (!courseLink.equals(driver.getCurrentUrl()))
-            {
-                try
-                {
+            if (!courseLink.equals(driver.getCurrentUrl())) {
+                try {
                     WebDriverWait findWaitTag = new WebDriverWait(driver, 1);
-                    if (resourceType.equals("li.activity.assign.modtype_assign"))
-                    {
+                    if (resourceType.equals("li.activity.assign.modtype_assign")) {
 
                         findWaitTag.until(ExpectedConditions.visibilityOfElementLocated(By.id("intro")));
                         mainTag = driver.findElement(By.id("intro"));
                         moreDownloadLinks = mainTag.findElements(By.tagName("a"));
-                    }
-                    else if (resourceType.equals("li.activity.folder.modtype_folder")) {
+                    } else if (resourceType.equals("li.activity.folder.modtype_folder")) {
                         downloadButton = driver.findElement(By.cssSelector("button[type=submit]"));
                         downloadButton.click();
-                    }
-                    else
-                    {
+                    } else {
                         findWaitTag.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.resourceworkaround")));
                         mainTag = driver.findElement(By.cssSelector("div.resourceworkaround"));
                         moreDownloadLinks = mainTag.findElements(By.tagName("a"));
                     }
 
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     // do not break for loop
                 }
 
                 // if it is not folder type
-                if (!resourceType.equals("li.activity.folder.modtype_folder"))
-                {
+                if (!resourceType.equals("li.activity.folder.modtype_folder")) {
                     // use REGEX TO FIND MATERIAL LINKS
                     String fileLinkPattern = ".*pluginfile.*";
-                    if (!moreDownloadLinks.isEmpty())
-                    {
+                    if (!moreDownloadLinks.isEmpty()) {
                         for (WebElement link : moreDownloadLinks) {
                             try {
                                 String fileURL = link.getAttribute("href");
                                 // avoid error
                                 if (fileURL != null) {
                                     // IS NOT A MP4 FILE
-                                    if (!fileURL.endsWith("mp4"))
-                                    {
+                                    if (!fileURL.endsWith("mp4")) {
                                         if (fileURL.matches(fileLinkPattern)) {
                                             // if this file doesn't exist yet
                                             if (!listDeepLinks.contains(fileURL)) {
@@ -218,8 +237,7 @@ public class Main extends Application {
                                     }
 
                                 }
-                            }
-                            catch(Exception e){
+                            } catch (Exception e) {
                                 // do nothing
                             }
                         }
@@ -234,47 +252,55 @@ public class Main extends Application {
 
         // DOWNLOAD DEEP LINKS
         for (String deepURL : listDeepLinks) {
-            if (deepURL != null)
-            {
+            if (deepURL != null) {
                 driver.get(deepURL);
             }
         }
     }
 
-    // FUNCTION TO TEST REGEX
-    /*
-    public static void main(String[] args){
-        String testPattern = ".*pluginfile.*";
-        String inputString = "https://elearning.usm.my/sidang2021/pluginfile.php/191781/mod_assign/introattachment/0/CAT201_2020-assignment1.pdf?forcedownload=1";
+    public static void main(String[] args)
+    {
+        getMoodleCookies();
 
-        if (inputString.matches(testPattern)){
-            System.out.println("YES");
+        // === IMPLEMENT SELECTION FUNCTION HERE ====
+        List<String> courseList = new ArrayList<>();
+        List<String> courseNameList = new ArrayList<>();
+        getCourseList(courseList, courseNameList);
+
+        /*
+        for (String link : courseList) {
+            // DOWNLOAD FILES
+            List<String> listResources = new ArrayList<>();
+            listResources.add("li.activity.assign.modtype_assign");
+            listResources.add("li.activity.resource.modtype_resource");
+            listResources.add("li.activity.folder.modtype_folder");
+
+            // DOWNLOAD
+            for (String resourceType : listResources){
+                driver.get(link);
+                System.out.println("SCRAPING " + driver.getTitle());
+                findLinks(resourceType, link);
+
+            }
+
+            // ARRANGE FILE
         }
-        else{
-            System.out.println("NO");
-        }
-    }
-     */
 
-    static WebDriver SetupCrawler() {
-        System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
+         */
 
-        // ----- SET DOWNLOAD PATH -----
-        Map<String, Object> prefs = new HashMap<>();
-
-        // CREATE A DOWNLOAD DIRECTORY
-        prefs.put("plugins.always_open_pdf_externally", true);
-        prefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + "externalFiles" + File.separator + "downloadFiles");
-        // DISABLE POP UP
-        prefs.put("profile.default_content_settings.popups", 0);
-        ChromeOptions options = new ChromeOptions();
-        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
-        options.setExperimentalOption("prefs", prefs);
-
-        return new ChromeDriver(options);
     }
 
-    static void LoginWebsite() {
+}
+
+
+/*
+    // --- TEST GET COOKIES --- AND PASS IT
+    public static void main (String [] args) throws InterruptedException {
+        // SETUP DRIVER
+        WebDriver driver = SetupCrawler();
+
+        driver.get("https://elearning.usm.my/sidang2021/");
+
         // GET DOWNLOAD LINK
 
         WebDriverWait wait = new WebDriverWait(driver, 5);
@@ -290,9 +316,7 @@ public class Main extends Application {
         // STEP 2 :
         // NAVIGATE TO LOGIN URL
         driver.get(loginURL);
-    }
 
-    static void PromptLogin() {
         // STEP 3 : ENTER USERNAME AND PASSWORD
         Scanner input = new Scanner(System.in);
 
@@ -331,24 +355,41 @@ public class Main extends Application {
         WebElement submitButton = driver.findElement(By.id("submitButton"));
         submitButton.click();
 
-    }
+        Set<Cookie> cookieList = driver.manage().getCookies();
 
-    static void getCourseList(List<String> courseList) {
-        // ----- START FIND COURSE LIST ------
-        List<WebElement> courseLinks = driver.findElements(By.cssSelector("a.courselist_course.scrollable"));
-        /* ----- TEST PRINT -----
-        for (WebElement course : courseLinks){
-            System.out.println(course.getText());
-            System.out.println(course.getAttribute("href"));
+        for(Cookie cookie : cookieList){
+            System.out.println(cookie.getName() + " HAS VALUE OF " + cookie.getValue());
         }
-        */
-        // STEP 6 : LOOP THROUGH EACH LINK
-        // REMEMBER COURSE LINKS
-        for (WebElement course : courseLinks) {
-            String courseURL = course.getAttribute("href");    // GET COURSE LINK
-            // System.out.println(courseURL);
-            courseList.add(courseURL);
+
+        System.out.println("EXITED");
+        driver.quit();
+
+        // CREATE NEW DRIVER AND SEE IF CAN PUT IN COOKIE
+        WebDriver newDriver = SetupCrawler();
+        newDriver.get("https://elearning.usm.my/sidang2021/");
+        newDriver.manage().deleteAllCookies();
+        for(Cookie cookie : cookieList) {
+            System.out.println("Adding Cookies");
+            newDriver.manage().addCookie(cookie);
+        }
+        Thread.sleep(2);
+        newDriver.get("https://elearning.usm.my/sidang2021/");
+    }
+*/
+
+
+    // FUNCTION TO TEST REGEX
+    /*
+    public static void main(String[] args){
+        String testPattern = ".*pluginfile.*";
+        String inputString = "https://elearning.usm.my/sidang2021/pluginfile.php/191781/mod_assign/introattachment/0/CAT201_2020-assignment1.pdf?forcedownload=1";
+
+        if (inputString.matches(testPattern)){
+            System.out.println("YES");
+        }
+        else{
+            System.out.println("NO");
         }
     }
+     */
 
-}
