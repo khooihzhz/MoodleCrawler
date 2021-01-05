@@ -91,7 +91,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </PasswordField>
-                        <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" style="-fx-background-color: #7A85AD; -fx-background-radius: 80;" text="Sign in" textFill="#f8f4f4">
+                        <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" styleClass="sign-in" stylesheets="@stylesheet.css" text="Sign In" textFill="#f8f4f4">
                             <font>
                                 <Font name="Arial Bold" size="14.0" />
                             </font>

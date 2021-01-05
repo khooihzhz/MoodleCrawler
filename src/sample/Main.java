@@ -78,17 +78,12 @@ public class Main extends Application {
         // NAVIGATE TO LOGIN URL
         driver.get(loginURL);
 
-        // STEP 3:
-        // PROMPT LOGIN
-        // STEP 3 : ENTER USERNAME AND PASSWORD
-        // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
         // *** USE getText() IN JAVAFX controller to get user input ***
-
         // Find EMAIL and PASSWORD text field
         WebElement eMail = driver.findElement(By.id("userNameInput"));
         WebElement password = driver.findElement(By.id("passwordInput"));
 
-        // STEP 4 : LOGIN
+        // STEP 3 : LOGIN
         // Enter User Email and Password Here
         eMail.sendKeys(userEmail);
         password.sendKeys(userPassword);
@@ -98,19 +93,17 @@ public class Main extends Application {
         // CHECK IF ERROR MESSAGE SHOWN OR NOT
         boolean login = driver.findElement(By.id("errorText")).isDisplayed();
 
-        // LOOP TO GET INPUT AGAIN IF errorText SHOWN
+        // IF errorText SHOWN, RETURN FALSE
         if (login){
             driver.quit();
             return false;
         }
         else {
-            // STEP 5 : OBTAIN COOKIE
+            // STEP 5 : OBTAIN COOKIE AND RETURN TRUE
             moodleCookies = driver.manage().getCookies();
             driver.quit();
             return true;
         }
-
-
     }
 
     static void modifyMoodleCookies(WebDriver driver) {

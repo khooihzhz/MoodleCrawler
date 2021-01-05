@@ -1,0 +1,11 @@
+.sign-in {
+    -fx-background-color: #7A85AD;
+    -fx-background-radius: 80;
+    -fx-text-fill: white;
+}
+
+.sign-in:pressed {
+    -fx-background-color: #394055;
+    -fx-background-radius: 80;
+    -fx-text-fill: #F8F9F9;
+}

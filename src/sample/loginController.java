@@ -7,24 +7,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import javafx.stage.Window;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-
-import java.sql.SQLException;
-import java.util.Scanner;
 
 public class loginController{
     @FXML private TextField stu_email;
     @FXML private PasswordField stu_password;
     @FXML private Button submitButton;
 
-    @FXML
     public void login (ActionEvent event) {
 
         Window owner = submitButton.getScene().getWindow();
 
-        boolean loginStatus = false;
+        boolean loginStatus;
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
         loginStatus = Main.getMoodleCookies(userEmail, userPassword);
@@ -32,9 +27,7 @@ public class loginController{
             // switch to next scene
         }
         else {
-            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
-                    "Invalid email or password!");
-
+            showAlert(Alert.AlertType.ERROR, owner, "Error", "Invalid email or password!");
         }
     }
 
