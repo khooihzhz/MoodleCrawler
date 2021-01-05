@@ -23,26 +23,19 @@ public class loginController{
     public void login (ActionEvent event) {
 
         Window owner = submitButton.getScene().getWindow();
+
+        boolean loginStatus = false;
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
+        loginStatus = Main.getMoodleCookies(userEmail, userPassword);
+        if (loginStatus) {
+            // switch to next scene
+        }
+        else {
+            showAlert(Alert.AlertType.ERROR, owner, "Form Error!",
+                    "Invalid email or password!");
 
-
-
-        WebElement eMail = Main.driver.findElement(By.id("userNameInput"));
-
-        // Find PassWord TextBox
-        WebElement password = Main.driver.findElement(By.id("passwordInput"));
-
-        // STEP 4 : LOGIN
-        // Enter User Email and Password Here
-        // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
-
-        eMail.sendKeys(userEmail);
-        password.sendKeys(userPassword);
-
-        WebElement submitButton = Main.driver.findElement(By.id("submitButton"));
-        submitButton.click();
-
+        }
     }
 
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {

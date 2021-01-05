@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -31,6 +32,8 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("loginpage.fxml"));
         primaryStage.setTitle("Moodle Crawler");
+        primaryStage.getIcons().add(new Image("resources/spiderweb.png"));
+        primaryStage.setResizable(false);
         primaryStage.setScene(new Scene(root, 771, 505));
         primaryStage.show();
     }
@@ -40,7 +43,6 @@ public class Main extends Application {
 
 
     // Setup Crawler Method
-
     static WebDriver setupCrawler(String SaveDirectory) {
         System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
 
@@ -58,7 +60,7 @@ public class Main extends Application {
         return new ChromeDriver(options);
     }
 
-    static void getMoodleCookies() {
+    static boolean getMoodleCookies(String userEmail, String userPassword) {
         WebDriver driver = setupCrawler("");
         driver.get("https://elearning.usm.my/sidang2021/");
         // GET DOWNLOAD LINK
@@ -81,13 +83,6 @@ public class Main extends Application {
         // STEP 3 : ENTER USERNAME AND PASSWORD
         // ------ IMPLEMENT SCANNER CLASS TO GET EMAIL AND USERNAME -------
         // *** USE getText() IN JAVAFX controller to get user input ***
-        Scanner userInput = new Scanner(System.in);
-        String userEmail;
-        String userPassword;
-        System.out.println("Username: ");
-        userEmail = userInput.nextLine();
-        System.out.println("Password: ");
-        userPassword = userInput.nextLine();
 
         // Find EMAIL and PASSWORD text field
         WebElement eMail = driver.findElement(By.id("userNameInput"));
@@ -104,24 +99,17 @@ public class Main extends Application {
         boolean login = driver.findElement(By.id("errorText")).isDisplayed();
 
         // LOOP TO GET INPUT AGAIN IF errorText SHOWN
-        while(login){
-
-            System.out.println("Login fail!");
-            System.out.println("Username: ");
-            userEmail = userInput.nextLine();
-            System.out.println("Password: ");
-            userPassword = userInput.nextLine();
-
-            eMail.clear();
-            eMail.sendKeys(userEmail);
-            password.clear();
-            password.sendKeys(userPassword);
-            submitButton.click();
-            login = driver.findElement(By.id("errorText")).isDisplayed();
+        if (login){
+            driver.quit();
+            return false;
+        }
+        else {
+            // STEP 5 : OBTAIN COOKIE
+            moodleCookies = driver.manage().getCookies();
+            driver.quit();
+            return true;
         }
 
-        // STEP 5 : OBTAIN COOKIE
-        moodleCookies = driver.manage().getCookies();
 
     }
 
@@ -337,8 +325,7 @@ public class Main extends Application {
 
     public static void main(String[] args)
     {
-        // launch(args);
-        getMoodleCookies();
+        launch(args);
 
         // === IMPLEMENT SELECTION FUNCTION HERE ====
         List<String> courseList = new ArrayList<>();
