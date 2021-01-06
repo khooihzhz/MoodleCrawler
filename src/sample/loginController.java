@@ -24,7 +24,8 @@ public class loginController{
         String userPassword = stu_password.getText();
         loginStatus = Main.getMoodleCookies(userEmail, userPassword);
         if (loginStatus) {
-            // switch to next scene
+            System.out.println(Main.moodleCookies);
+            Main.getCourseList(Main.courseList, Main.courseNameList);
         }
         else {
             showAlert(Alert.AlertType.ERROR, owner, "Error", "Invalid email or password!");

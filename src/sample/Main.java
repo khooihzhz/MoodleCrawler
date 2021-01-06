@@ -10,8 +10,6 @@ import javafx.scene.image.Image;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.DesiredCapabilities;
-import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -22,8 +20,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class Main extends Application {
 
@@ -38,9 +34,11 @@ public class Main extends Application {
         primaryStage.show();
     }
 
+    // ------------GLOBAL VARIABLES---------------------
     // Save Cookie for new Drivers
     public static Set<Cookie> moodleCookies;
-
+    public static List<String> courseList = new ArrayList<>();
+    public static List<String> courseNameList = new ArrayList<>(); // store course names
 
     // Setup Crawler Method
     static WebDriver setupCrawler(String SaveDirectory) {
@@ -91,10 +89,20 @@ public class Main extends Application {
         submitButton.click();
 
         // CHECK IF ERROR MESSAGE SHOWN OR NOT
-        boolean login = driver.findElement(By.id("errorText")).isDisplayed();
+        boolean checkLogin = false;
+
+        try{
+            // check if this element exists
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("errorText")));
+            checkLogin = driver.findElement(By.id("errorText")).isDisplayed();
+        }catch (Exception e)
+        {
+            // do nothing
+        }
 
         // IF errorText SHOWN, RETURN FALSE
-        if (login){
+        if (checkLogin){
+            // fail to login
             driver.quit();
             return false;
         }
@@ -120,11 +128,13 @@ public class Main extends Application {
     }
 
     static void getCourseList(List<String> courseList, List<String> courseNameList) {
-        WebDriver driver = setupCrawler("courseList");
+        WebDriver driver = setupCrawler("");
         modifyMoodleCookies(driver);
+        WebDriverWait wait = new WebDriverWait(driver, 2);
         // ----- START FIND COURSE LIST ------
+        // wait for page load
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.courselist_course.scrollable")));
         List<WebElement> courseLinks = driver.findElements(By.cssSelector("a.courselist_course.scrollable"));
-
         // STEP 6 : LOOP THROUGH EACH LINK
         // REMEMBER COURSE LINKS
         for (WebElement course : courseLinks) {
@@ -132,7 +142,11 @@ public class Main extends Application {
             // System.out.println(courseURL);
             courseList.add(courseURL);
             // ===== GET COURSE NAME =====
+            // System.out.println(course.getText());
+            courseNameList.add(course.getText());
         }
+        // quit driver everytime we finish a function
+        driver.quit();
     }
 
     static void findLinks(String resourceType, String courseLink, String courseName) {
@@ -318,12 +332,10 @@ public class Main extends Application {
 
     public static void main(String[] args)
     {
-        launch(args);
 
+        launch(args);
         // === IMPLEMENT SELECTION FUNCTION HERE ====
-        List<String> courseList = new ArrayList<>();
-        List<String> courseNameList = new ArrayList<>();
-        getCourseList(courseList, courseNameList);
+        //getCourseList(courseList, courseNameList);
 
         /*
         for (String link : courseList) {
