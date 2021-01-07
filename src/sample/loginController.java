@@ -1,37 +1,67 @@
 package sample;
 
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class loginController{
+    // FX COMPONENTS
     @FXML private TextField stu_email;
     @FXML private PasswordField stu_password;
     @FXML private Button submitButton;
 
-    public void login (ActionEvent event) {
+    // ------------GLOBAL VARIABLES---------------------
+    // Save Cookie for new Drivers
+    public static Set<Cookie> moodleCookies;
+    public static List<String> courseList = new ArrayList<>();
+    public static List<String> courseNameList = new ArrayList<>(); // store course names
 
+
+    public void initialize() {
+
+    }
+
+    // LOGIN
+    public void login (ActionEvent event) {
         Window owner = submitButton.getScene().getWindow();
 
         boolean loginStatus;
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
-        loginStatus = Main.getMoodleCookies(userEmail, userPassword);
+
+        loginStatus = getMoodleCookies(userEmail, userPassword);
         if (loginStatus) {
-            System.out.println(Main.moodleCookies);
-            Main.getCourseList(Main.courseList, Main.courseNameList);
+            // SWITCH TO NEXT SCENE
+            loadNextScene("progresspage.fxml");
+            System.out.println(moodleCookies);
+            getCourseList(courseList, courseNameList);
         }
         else {
-            showAlert(Alert.AlertType.ERROR, owner, "Error", "Invalid email or password!");
+            showAlert(Alert.AlertType.ERROR, owner, "Error",
+                    "Invalid email or password!\nPlease try again to login.");
+            stu_email.clear();
+            stu_password.clear();
         }
     }
 
+    // SHOW ALERT METHOD
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -41,4 +71,126 @@ public class loginController{
         alert.show();
     }
 
+    // LOAD NEXT SCENE
+    private void loadNextScene(String fxml) {
+        try {
+            Parent nextStage = FXMLLoader.load(Main.class.getResource(fxml));
+            Scene newScene = new Scene(nextStage);
+            Stage currentStage = (Stage) Main.root.getScene().getWindow();
+            currentStage.setScene(newScene);
+        }
+        catch (IOException e) {
+            // do nothing
+        }
+    }
+
+    // Setup Crawler Method
+    public static WebDriver setupCrawler(String SaveDirectory) {
+        System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
+
+        // ----- SET DOWNLOAD PATH -----
+        Map<String, Object> prefs = new HashMap<>();
+        // NAVIGATE TO DOWNLOAD DIRECTORY
+        prefs.put("plugins.always_open_pdf_externally", true);
+        prefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + SaveDirectory);
+        // DISABLE POP UP
+        prefs.put("profile.default_content_settings.popups", 0);
+        ChromeOptions options = new ChromeOptions();
+        options.setPageLoadStrategy(PageLoadStrategy.EAGER);
+        options.setExperimentalOption("prefs", prefs);
+
+        return new ChromeDriver(options);
+    }
+
+    private static boolean getMoodleCookies(String userEmail, String userPassword) {
+        WebDriver driver = setupCrawler("");
+        driver.get("https://elearning.usm.my/sidang2021/");
+        // GET DOWNLOAD LINK
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("a")));
+
+        List<WebElement> loginLinks = driver.findElements(By.tagName("a"));
+        String loginURL = "";
+        for (WebElement link : loginLinks) {
+            if (link.getAttribute("title").equals(" Login")) {    // CHECK HTML PAGE AND CAN KNOW "LOGIN" HAVE THE LINK
+                loginURL = link.getAttribute("href");
+            }
+        }
+        // STEP 2 :
+        // NAVIGATE TO LOGIN URL
+        driver.get(loginURL);
+
+        // *** USE getText() IN JAVAFX controller to get user input ***
+        // Find EMAIL and PASSWORD text field
+        WebElement eMail = driver.findElement(By.id("userNameInput"));
+        WebElement password = driver.findElement(By.id("passwordInput"));
+
+        // STEP 3 : LOGIN
+        // Enter User Email and Password Here
+        eMail.sendKeys(userEmail);
+        password.sendKeys(userPassword);
+        WebElement submitButton = driver.findElement(By.id("submitButton"));
+        submitButton.click();
+
+        // CHECK IF ERROR MESSAGE SHOWN OR NOT
+        boolean checkLogin = false;
+
+        try{
+            // check if this element exists
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("errorText")));
+            checkLogin = driver.findElement(By.id("errorText")).isDisplayed();
+        }catch (Exception e)
+        {
+            // do nothing
+        }
+
+        // IF errorText SHOWN, RETURN FALSE
+        if (checkLogin){
+            // fail to login
+            driver.quit();
+            return false;
+        }
+        else {
+            // STEP 5 : OBTAIN COOKIE AND RETURN TRUE
+            moodleCookies = driver.manage().getCookies();
+            driver.quit();
+            return true;
+        }
+    }
+
+
+    public static void modifyMoodleCookies(WebDriver driver) {
+        driver.get("https://elearning.usm.my/sidang2021/");
+        // REMOVE ALL COOKIES AND ADD NEW ONE
+        driver.manage().deleteAllCookies();
+
+        for (Cookie cookie : moodleCookies) {
+            driver.manage().addCookie(cookie);
+        }
+
+        // refresh
+        driver.get("https://elearning.usm.my/sidang2021/");
+    }
+
+    private void getCourseList(List<String> courseList, List<String> courseNameList) {
+        WebDriver driver = setupCrawler("");
+        modifyMoodleCookies(driver);
+        WebDriverWait wait = new WebDriverWait(driver, 2);
+        // ----- START FIND COURSE LIST ------
+        // wait for page load
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.courselist_course.scrollable")));
+        List<WebElement> courseLinks = driver.findElements(By.cssSelector("a.courselist_course.scrollable"));
+        // STEP 6 : LOOP THROUGH EACH LINK
+        // REMEMBER COURSE LINKS
+        for (WebElement course : courseLinks) {
+            String courseURL = course.getAttribute("href");    // GET COURSE LINK
+            // System.out.println(courseURL);
+            courseList.add(courseURL);
+            // ===== GET COURSE NAME =====
+            // System.out.println(course.getText());
+            courseNameList.add(course.getText());
+        }
+        // quit driver everytime we finish a function
+        driver.quit();
+    }
 }
