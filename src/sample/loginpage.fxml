@@ -20,7 +20,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.loginController">
     <children>
-        <SplitPane dividerPositions="0.5" layoutX="123.0" layoutY="40.0" prefHeight="505.0" prefWidth="771.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.5006501950585176" layoutX="123.0" layoutY="40.0" prefHeight="505.0" prefWidth="771.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
                 <AnchorPane minHeight="0.0" minWidth="382.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(to left, #536976, #292e49);">
                     <children>
@@ -117,6 +117,7 @@
                         <Image url="@../resources/password.png" />
                      </image>
                   </ImageView>
+                  <Circle fx:id="c" fill="#2f79bf00" layoutX="276.0" layoutY="354.0" radius="14.0" stroke="#2e2e2e" strokeType="INSIDE" style="-fx-stroke-dash-array: 10;" />
                     </children>
                 </AnchorPane>
             </items>

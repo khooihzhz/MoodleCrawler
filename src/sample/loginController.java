@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.animation.RotateTransition;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import javafx.util.Duration;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -26,6 +30,7 @@ public class loginController{
     @FXML private TextField stu_email;
     @FXML private PasswordField stu_password;
     @FXML private Button submitButton;
+    @FXML private Circle c;
 
     // ------------GLOBAL VARIABLES---------------------
     // Save Cookie for new Drivers
@@ -35,30 +40,35 @@ public class loginController{
 
 
     public void initialize() {
-
+        c.setVisible(false);
     }
 
     // LOGIN
     public void login (ActionEvent event) {
+        // SET THE CIRCLE VISIBLE AND ROTATE
+        c.setVisible(true);
+        setRotate(c, false, 360, 3);
+
         Window owner = submitButton.getScene().getWindow();
 
+        // GET THE INPUT FROM THE USER
         boolean loginStatus;
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
-
+        // CHECK IF LOGIN IS SUCCESSFUL
         loginStatus = getMoodleCookies(userEmail, userPassword);
         if (loginStatus) {
             // SWITCH TO NEXT SCENE
             loadNextScene("progresspage.fxml");
             System.out.println(moodleCookies);
             getCourseList(courseList, courseNameList);
-        }
-        else {
+        } else {
             showAlert(Alert.AlertType.ERROR, owner, "Error",
                     "Invalid email or password!\nPlease try again to login.");
             stu_email.clear();
             stu_password.clear();
         }
+        //new Thread(loadTask).start();
     }
 
     // SHOW ALERT METHOD
@@ -69,6 +79,18 @@ public class loginController{
         alert.setContentText(message);
         alert.initOwner(owner);
         alert.show();
+    }
+
+    // LOADING INDICATOR
+    private void setRotate(Circle c, boolean reverse, int angle, int duration) {
+        RotateTransition rt = new RotateTransition(Duration.seconds(duration), c);
+
+        rt.setAutoReverse(reverse);
+        rt.setByAngle(angle);
+        rt.setDelay(Duration.seconds(0));
+        rt.setRate(3);
+        rt.setCycleCount(10);
+        rt.play();
     }
 
     // LOAD NEXT SCENE
@@ -193,4 +215,30 @@ public class loginController{
         // quit driver everytime we finish a function
         driver.quit();
     }
+
+    Task<Void> loadTask = new Task<Void>() {
+        @Override
+        protected Void call() throws Exception {
+            Window owner = submitButton.getScene().getWindow();
+
+            // GET THE INPUT FROM THE USER
+            boolean loginStatus;
+            String userEmail = stu_email.getText();
+            String userPassword = stu_password.getText();
+            // CHECK IF LOGIN IS SUCCESSFUL
+            loginStatus = getMoodleCookies(userEmail, userPassword);
+            if (loginStatus) {
+                // SWITCH TO NEXT SCENE
+                loadNextScene("progresspage.fxml");
+                System.out.println(moodleCookies);
+                getCourseList(courseList, courseNameList);
+            } else {
+                showAlert(Alert.AlertType.ERROR, owner, "Error",
+                        "Invalid email or password!\nPlease try again to login.");
+                stu_email.clear();
+                stu_password.clear();
+            }
+            return null;
+        }
+    };
 }
