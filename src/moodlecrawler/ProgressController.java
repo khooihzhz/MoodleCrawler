@@ -1,4 +1,4 @@
-package sample;
+package moodlecrawler;
 
 import javafx.animation.RotateTransition;
 import javafx.fxml.FXML;
