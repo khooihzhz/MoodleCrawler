@@ -39,8 +39,27 @@ public class loginController{
     public static List<String> courseNameList = new ArrayList<>(); // store course names
 
 
+    public static WebDriver driver;
+
     public void initialize() {
         c.setVisible(false);
+
+        driver = setupCrawler("");
+        driver.get("https://elearning.usm.my/sidang2021/");
+        // GET DOWNLOAD LINK
+        WebDriverWait wait = new WebDriverWait(driver, 5);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("a")));
+
+        List<WebElement> loginLinks = driver.findElements(By.tagName("a"));
+        String loginURL = "";
+        for (WebElement link : loginLinks) {
+            if (link.getAttribute("title").equals(" Login")) {    // CHECK HTML PAGE AND CAN KNOW "LOGIN" HAVE THE LINK
+                loginURL = link.getAttribute("href");
+            }
+        }
+        // STEP 2 :
+        // NAVIGATE TO LOGIN URL
+        driver.get(loginURL);
     }
 
     // LOGIN
@@ -125,23 +144,6 @@ public class loginController{
     }
 
     private static boolean getMoodleCookies(String userEmail, String userPassword) {
-        WebDriver driver = setupCrawler("");
-        driver.get("https://elearning.usm.my/sidang2021/");
-        // GET DOWNLOAD LINK
-        WebDriverWait wait = new WebDriverWait(driver, 5);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.tagName("a")));
-
-        List<WebElement> loginLinks = driver.findElements(By.tagName("a"));
-        String loginURL = "";
-        for (WebElement link : loginLinks) {
-            if (link.getAttribute("title").equals(" Login")) {    // CHECK HTML PAGE AND CAN KNOW "LOGIN" HAVE THE LINK
-                loginURL = link.getAttribute("href");
-            }
-        }
-        // STEP 2 :
-        // NAVIGATE TO LOGIN URL
-        driver.get(loginURL);
-
         // *** USE getText() IN JAVAFX controller to get user input ***
         // Find EMAIL and PASSWORD text field
         WebElement eMail = driver.findElement(By.id("userNameInput"));
@@ -159,6 +161,7 @@ public class loginController{
 
         try{
             // check if this element exists
+            WebDriverWait wait = new WebDriverWait(driver, 2);
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("errorText")));
             checkLogin = driver.findElement(By.id("errorText")).isDisplayed();
         }catch (Exception e)
