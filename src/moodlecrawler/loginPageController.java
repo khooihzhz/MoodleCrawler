@@ -1,7 +1,6 @@
 package moodlecrawler;
 
 import javafx.animation.RotateTransition;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +20,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import sample.second;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -41,6 +40,7 @@ public class loginPageController {
     // variables
     public static Set<Cookie> moodleCookies;
     public static Thread backgroundThread = new Thread(new StartUpThread());
+
 
     // SHOW ALERT METHOD
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
@@ -67,60 +67,93 @@ public class loginPageController {
     // LOAD NEXT SCENE
     private void loadNextScene(String fxml) {
         try {
-            Parent nextStage = FXMLLoader.load(Main.class.getResource(fxml));
+            Parent nextStage = FXMLLoader.load(second.class.getResource(fxml));
             Scene newScene = new Scene(nextStage);
-            Stage currentStage = (Stage) Main.root.getScene().getWindow();
+            Stage currentStage = (Stage) second.root.getScene().getWindow();
             currentStage.setScene(newScene);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             // do nothing
         }
     }
 
-    public void initialize() {
-        c.setVisible(false);
+    public void initialize()
+    {
         backgroundThread.start();
     }
 
     // LOGIN
-    public void login(ActionEvent event) throws InterruptedException {
-        String userEmail = stu_email.getText();
-        String userPassword = stu_password.getText();
-        backgroundThread.join();
+    public void login (ActionEvent event) throws InterruptedException {
+
+        // SET THE CIRCLE VISIBLE AND ROTATE
         c.setVisible(true);
         setRotate(c, false, 360, 3);
-        Task <Void> GetMoodleCookiesTask = new GetMoodleCookiesTask(userEmail, userPassword);
-        new Thread(GetMoodleCookiesTask).start();
 
-        GetMoodleCookiesTask.setOnSucceeded(workerStateEvent -> {
-            Window owner = submitButton.getScene().getWindow();
-            c.setVisible(false);
+        Window owner = submitButton.getScene().getWindow();
+
+        // GET THE INPUT FROM THE USER
+        boolean loginStatus;
+        String userEmail = stu_email.getText();
+        String userPassword = stu_password.getText();
+        // CHECK IF LOGIN IS SUCCESSFUL
+        loginStatus = getMoodleCookies("", "");
+        if (loginStatus) {
+            // SWITCH TO NEXT SCENE
+            System.out.println(moodleCookies);
+            //getCourseList(courseList, courseNameList);
+            loadNextScene("progresspage.fxml");
+        } else {
             showAlert(Alert.AlertType.ERROR, owner, "Error",
                     "Invalid email or password!\nPlease try again to login.");
             stu_email.clear();
             stu_password.clear();
-        });
+        }
+    }
+    public static boolean getMoodleCookies(String userEmail, String userPassword) {
+        UserWebDriver userDriver = UserWebDriver.getInstance();
+        WebDriver driver = userDriver.getWebDriver();
+        // *** USE getText() IN JAVAFX controller to get user input ***
+        // Find EMAIL and PASSWORD text field
+        WebElement eMail = driver.findElement(By.id("userNameInput"));
+        WebElement password = driver.findElement(By.id("passwordInput"));
 
-        GetMoodleCookiesTask.setOnFailed(workerStateEvent -> {
-            UserWebDriver userDriver = UserWebDriver.getInstance();
-            WebDriver driver = userDriver.getWebDriver();
+        // STEP 3 : LOGIN
+        // Enter User Email and Password Here
+        eMail.sendKeys(userEmail);
+        password.sendKeys(userPassword);
+        WebElement submitButton = driver.findElement(By.id("submitButton"));
+        submitButton.click();
+
+        // CHECK IF ERROR MESSAGE SHOWN OR NOT
+        boolean checkLogin = false;
+
+        try{
+            // check if this element exists
+            WebDriverWait wait = new WebDriverWait(driver, 2);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("errorText")));
+            checkLogin = driver.findElement(By.id("errorText")).isDisplayed();
+        }catch (Exception e)
+        {
+            // do nothing
+        }
+
+        // IF errorText SHOWN, RETURN FALSE
+        if (checkLogin){
+            // fail to login
+            driver.quit();
+            return false;
+        }
+        else {
+            // STEP 5 : OBTAIN COOKIE AND RETURN TRUE
             moodleCookies = driver.manage().getCookies();
-            // SWITCH TO NEXT SCENE
-            loadNextScene("progresspage.fxml");
-            System.out.println(moodleCookies);
-            getCourseList();
-            UserCookie userCookie = UserCookie.getInstance();
-            List <String> course = userCookie.getCourseNameList();
-
-            for (String name : course)
-            {
-                System.out.println(name);
-            }
-        });
+            UserCookie userCookies = UserCookie.getInstance();
+            userCookies.setUserCookie(moodleCookies);
+            driver.quit();
+            return true;
+        }
     }
 
-    private void getCourseList() {
-        List<String> courseList = new ArrayList<>();
-        List<String> courseNameList = new ArrayList<>();
+    private void getCourseList(List<String> courseList, List<String> courseNameList) {
         UserWebDriver userDriver = UserWebDriver.getInstance();
         WebDriver driver = userDriver.getWebDriver();
 
@@ -140,9 +173,6 @@ public class loginPageController {
             courseNameList.add(course.getText());
         }
         // quit driver everytime we finish a function
-        UserCookie userCookie = UserCookie.getInstance();
-        userCookie.setCourseList(courseList);
-        userCookie.setCourseNameList(courseNameList);
         driver.quit();
     }
 }
