@@ -20,8 +20,7 @@ public class DownloadFilesTask extends Task<Void> {
     }
 }
 
-
-//    static void findLinks(String resourceType, String courseLink, String courseName) {
+    //static void findLinks(String resourceType, String courseLink, String courseName) {
 //
 //        // SETUP CRAWLERS
 //         WebDriver driver = setupCrawler(courseName);
