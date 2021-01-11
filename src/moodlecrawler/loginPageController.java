@@ -1,5 +1,6 @@
 package moodlecrawler;
 
+import com.shapesecurity.salvation2.Values.Hash;
 import javafx.animation.RotateTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -24,6 +25,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
@@ -108,19 +110,13 @@ public class loginPageController {
             loadNextScene("progresspage.fxml");
             System.out.println(moodleCookies);
             getCourseList();
-            UserCookie userCookie = UserCookie.getInstance();
-            List <String> course = userCookie.getCourseNameList();
-
-            for (String name : course)
-            {
-                System.out.println(name);
-            }
         });
     }
 
     private void getCourseList() {
-        List<String> courseList = new ArrayList<>();
-        List<String> courseNameList = new ArrayList<>();
+
+        HashMap <String, String> courseMap = new HashMap<String, String>();
+
         UserWebDriver userDriver = UserWebDriver.getInstance();
         WebDriver driver = userDriver.getWebDriver();
 
@@ -133,16 +129,12 @@ public class loginPageController {
         // REMEMBER COURSE LINKS
         for (WebElement course : courseLinks) {
             String courseURL = course.getAttribute("href");    // GET COURSE LINK
-            // System.out.println(courseURL);
-            courseList.add(courseURL);
-            // ===== GET COURSE NAME =====
-            // System.out.println(course.getText());
-            courseNameList.add(course.getText());
+            // STORE COURSE NAME AND URL
+            courseMap.put(course.getText(), courseURL);
         }
         // quit driver everytime we finish a function
         UserCookie userCookie = UserCookie.getInstance();
-        userCookie.setCourseList(courseList);
-        userCookie.setCourseNameList(courseNameList);
+        userCookie.setCourseMap(courseMap);
         driver.quit();
     }
 }

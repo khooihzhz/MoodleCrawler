@@ -9,6 +9,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 public class SetupCrawler {
     public static WebDriver setupCrawler(String SaveDirectory) {
@@ -28,10 +29,13 @@ public class SetupCrawler {
         return new ChromeDriver(options);
     }
 
-   /* public static void modifyMoodleCookies(WebDriver driver) {
+   public static void modifyMoodleCookies(WebDriver driver) {
         driver.get("https://elearning.usm.my/sidang2021/");
         // REMOVE ALL COOKIES AND ADD NEW ONE
         driver.manage().deleteAllCookies();
+
+        UserCookie userCookie = UserCookie.getInstance();
+        Set<Cookie> moodleCookies = userCookie.getUserCookie();
 
         for (Cookie cookie : moodleCookies) {
             driver.manage().addCookie(cookie);
@@ -41,5 +45,5 @@ public class SetupCrawler {
         driver.get("https://elearning.usm.my/sidang2021/");
     }
 
-    */
+
 }
