@@ -1,6 +1,5 @@
 package moodlecrawler;
 
-import com.shapesecurity.salvation2.Values.Hash;
 import javafx.animation.RotateTransition;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -24,25 +23,24 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class loginPageController {
     // FX COMPONENTS
-    @FXML
-    private TextField stu_email;
-    @FXML
-    private PasswordField stu_password;
-    @FXML
-    private Button submitButton;
-    @FXML
-    private Circle c;
+    @FXML private TextField stu_email;
+    @FXML private PasswordField stu_password;
+    @FXML private Button submitButton;
+    @FXML private Circle c;
 
     // variables
     public static Set<Cookie> moodleCookies;
     public static Thread backgroundThread = new Thread(new StartUpThread());
+    public static Parent secondStage;
+
+    public void initialize() {
+        c.setVisible(false);
+        backgroundThread.start();
+    }
 
     // SHOW ALERT METHOD
     private static void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
@@ -69,18 +67,13 @@ public class loginPageController {
     // LOAD NEXT SCENE
     private void loadNextScene(String fxml) {
         try {
-            Parent nextStage = FXMLLoader.load(Main.class.getResource(fxml));
-            Scene newScene = new Scene(nextStage);
+            secondStage = FXMLLoader.load(Main.class.getResource(fxml));
+            Scene newScene = new Scene(secondStage);
             Stage currentStage = (Stage) Main.root.getScene().getWindow();
             currentStage.setScene(newScene);
         } catch (IOException e) {
             // do nothing
         }
-    }
-
-    public void initialize() {
-        c.setVisible(false);
-        backgroundThread.start();
     }
 
     // LOGIN
@@ -106,16 +99,16 @@ public class loginPageController {
             UserWebDriver userDriver = UserWebDriver.getInstance();
             WebDriver driver = userDriver.getWebDriver();
             moodleCookies = driver.manage().getCookies();
-            // SWITCH TO NEXT SCENE
-            loadNextScene("progresspage.fxml");
             System.out.println(moodleCookies);
             getCourseList();
+            // SWITCH TO NEXT SCENE
+            loadNextScene("courselist.fxml");
         });
     }
 
     private void getCourseList() {
 
-        HashMap <String, String> courseMap = new HashMap<String, String>();
+        LinkedHashMap <String, String> courseMap = new LinkedHashMap<>();
 
         UserWebDriver userDriver = UserWebDriver.getInstance();
         WebDriver driver = userDriver.getWebDriver();
@@ -136,5 +129,6 @@ public class loginPageController {
         UserCookie userCookie = UserCookie.getInstance();
         userCookie.setCourseMap(courseMap);
         driver.quit();
+
     }
 }

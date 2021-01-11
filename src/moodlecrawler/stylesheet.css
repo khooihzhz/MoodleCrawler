@@ -21,3 +21,16 @@
 .field:focused {
     -fx-background-color: -fx-focus-color, -fx-background;
 }
+
+/* DOWNLOAD BUTTON STYLING */
+.download {
+    -fx-background-color: #616D7E;
+    -fx-background-radius: 80;
+    -fx-text-fill: #ff9797;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+}
+
+.download:pressed {
+    -fx-background-color: #7782A2;
+    -fx-text-fill: #ff5a5a;
+}

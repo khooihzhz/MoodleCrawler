@@ -2,14 +2,11 @@ package moodlecrawler;
 
 import org.openqa.selenium.Cookie;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public final class UserCookie {
-    private HashMap<String, String> courseMap = new HashMap<String, String>();
-
+    private LinkedHashMap<String, String> courseMap = new LinkedHashMap<>();
+    private LinkedHashMap<String, String> selectedCourseMap = new LinkedHashMap<>();
     private Set<Cookie> userCookie;
     private final static UserCookie INSTANCE = new UserCookie();
 
@@ -30,15 +27,21 @@ public final class UserCookie {
         return this.userCookie;
     }
 
-    public void setCourseMap(HashMap <String, String> courseMap)
+    public void setCourseMap(LinkedHashMap <String, String> courseMap)
     {
         this.courseMap = courseMap;
     }
 
-
-    public HashMap <String, String> getCourseMap()
+    public LinkedHashMap <String, String> getCourseMap()
     {
         return this.courseMap;
     }
 
+    public void setSelectedCourseMap(LinkedHashMap<String, String> selectedCourseMap) {
+        this.selectedCourseMap = selectedCourseMap;
+    }
+
+    public LinkedHashMap<String, String> getSelectedCourseMap() {
+        return this.selectedCourseMap;
+    }
 }
