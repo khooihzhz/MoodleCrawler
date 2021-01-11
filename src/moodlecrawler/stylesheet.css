@@ -34,3 +34,67 @@
     -fx-background-color: #7782A2;
     -fx-text-fill: #ff5a5a;
 }
+
+/* LISTVIEW STYLING */
+.list-view {
+    -fx-background-color: #49494a;
+    -fx-text-fill: white;
+}
+
+.list-cell {
+    -fx-cell-size: 30;
+}
+
+.list-cell:even {
+    -fx-background-color: #49494a;
+    -fx-background-radius: 30;
+}
+
+.list-cell:odd {
+    -fx-background-color: #5b5b5d;
+    -fx-background-radius: 30;
+}
+
+.scroll-bar:horizontal {
+    -fx-background-radius: 30;
+    -fx-background-color: #49494a;
+}
+
+.scroll-bar:vertical {
+    -fx-background-radius: 30;
+    -fx-background-color: #49494a;
+}
+
+.thumb {
+    -fx-background-color: #5b5b5d;
+}
+
+.decrement-button .decrement-arrow {
+    visibility: false;
+}
+
+.increment-button .increment-arrow {
+    visibility: false;
+}
+/* END OF LIST VIEW STYLING */
+
+/* CHECK BOX STYLING */
+.check-box {
+    -fx-text-fill: white;
+}
+
+.check-box:selected > .box {
+    /* background color for selected checkbox */
+    -fx-background-color: #36bebb;
+}
+
+.check-box > .box {
+    /* background color of unselected checkbox */
+    -fx-background-color: #000000;
+}
+
+.check-box:selected > .box > .mark {
+    /* modify mark color */
+    -fx-background-color: #f8f6f6;
+}
+/* END OF CHECKBOX STYLING */

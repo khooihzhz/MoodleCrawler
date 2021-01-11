@@ -89,7 +89,7 @@ public class loginPageController {
         GetMoodleCookiesTask.setOnSucceeded(workerStateEvent -> {
             Window owner = submitButton.getScene().getWindow();
             c.setVisible(false);
-            showAlert(Alert.AlertType.ERROR, owner, "Error",
+            showAlert(Alert.AlertType.ERROR, owner, "Login Failed",
                     "Invalid email or password!\nPlease try again to login.");
             stu_email.clear();
             stu_password.clear();

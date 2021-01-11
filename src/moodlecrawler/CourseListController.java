@@ -8,18 +8,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 
 public class CourseListController {
 
     @FXML private Button dlButton;
     @FXML private VBox vbox;
+    @FXML private ListView<CheckBox> listview;
 
     public static Parent thirdStage;
 
@@ -28,16 +28,13 @@ public class CourseListController {
         LinkedHashMap<String, String> courseMap = userCookie.getCourseMap();
         LinkedHashMap<String, String> selectedCourseMap = userCookie.getSelectedCourseMap();
 
-
         for (String name : courseMap.keySet()) {
             // DECLARE CHECKBOX OBJECT
             CheckBox checkbox = new CheckBox(name);
-            checkbox.setStyle(
-                    "-fx-border-color: transparent; " + "-fx-text-fill: white;"
-            );
 
             // ADD CONTENT INTO THE TABLE COLUMNS
-            vbox.getChildren().add(checkbox);
+            //vbox.getChildren().add(checkbox);
+            listview.getItems().add(checkbox);
 
             // CREATE A EVENT HANDLER
             EventHandler<ActionEvent> event = event1 -> {
@@ -55,10 +52,12 @@ public class CourseListController {
         }
     }
 
+    // DOWNLOAD BUTTON FUNCTION
     public void download(ActionEvent event) {
         loadNextScene("progresspage.fxml");
     }
 
+    // LOAD TO NEXT SCENE FUNCTION
     private void loadNextScene(String fxml) {
         try {
             thirdStage = FXMLLoader.load(Main.class.getResource(fxml));
