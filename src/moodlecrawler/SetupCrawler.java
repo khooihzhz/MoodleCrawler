@@ -12,19 +12,22 @@ import java.util.Map;
 import java.util.Set;
 
 public class SetupCrawler {
-    public static WebDriver setupCrawler(String SaveDirectory) {
+    public static WebDriver setup(String SaveDirectory) {
+        SaveDirectory = SaveDirectory.replaceAll("[^a-zA-Z0-9&]", " ");
+
         System.setProperty("webdriver.chrome.driver", ".\\chromedriver.exe");
 
         // ----- SET DOWNLOAD PATH -----
         Map<String, Object> prefs = new HashMap<>();
         // NAVIGATE TO DOWNLOAD DIRECTORY
         prefs.put("plugins.always_open_pdf_externally", true);
-        prefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + SaveDirectory);
+        prefs.put("download.default_directory", System.getProperty("user.dir") + File.separator + "DownloadedFiles" + File.separator + SaveDirectory);
         // DISABLE POP UP
         prefs.put("profile.default_content_settings.popups", 0);
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         options.setExperimentalOption("prefs", prefs);
+        //options.addArguments("--headless");
 
         return new ChromeDriver(options);
     }

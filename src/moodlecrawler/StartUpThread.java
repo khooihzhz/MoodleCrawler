@@ -8,12 +8,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Set;
 
 public class StartUpThread implements Runnable{
     @Override
     public void run() {
         // START DOWNLOAD
-        WebDriver driver = SetupCrawler.setupCrawler("");
+        WebDriver driver = SetupCrawler.setup("");
         driver.get("https://elearning.usm.my/sidang2021/");
         // GET DOWNLOAD LINK
         WebDriverWait wait = new WebDriverWait(driver, 5);

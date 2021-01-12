@@ -1,12 +1,14 @@
 package moodlecrawler;
 
 import javafx.concurrent.Task;
+import org.apache.commons.io.FilenameUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -21,19 +23,17 @@ public class DownloadFilesTask extends Task<Void> {
         LinkedHashMap<String, String> courseMap = userCookie.getSelectedCourseMap();
 
         for (String courseName : courseMap.keySet()) {
-
             String courseURL = courseMap.get(courseName);
             List<String> listResources = new ArrayList<>();
-            listResources.add("li.activity.assign.modtype_assign");
-            listResources.add("li.activity.resource.modtype_resource");
+            //listResources.add("li.activity.assign.modtype_assign");
+            //listResources.add("li.activity.resource.modtype_resource");
             listResources.add("li.activity.folder.modtype_folder");
-
-            // START DOWNLOAD
-            WebDriver driver = SetupCrawler.setupCrawler(courseName);
+            WebDriver driver = SetupCrawler.setup(courseName);
             SetupCrawler.modifyMoodleCookies(driver);
 
             for (String resourceType : listResources) {
                 //declaration of variables
+                // START DOWNLOAD
                 WebDriverWait wait = new WebDriverWait(driver, 2);
                 List<WebElement> materialsAttributes = new ArrayList<>();
                 List<String> listLinks = new ArrayList<>();
@@ -159,7 +159,42 @@ public class DownloadFilesTask extends Task<Void> {
                         driver.get(deepURL);
                     }
                 }
+
             }
+            // CHECK IF THERE IS STILL FILE DOWNLOADING
+            String ModifiedCourseName = courseName.replaceAll("[^a-zA-Z0-9&]", " ");
+            String FolderPath = System.getProperty("user.dir") + File.separator + "DownloadedFiles" + File.separator + ModifiedCourseName;
+
+            while (true)
+            {
+                boolean downloadCompleted = true;
+
+                File folder = new File(FolderPath);
+
+                File [] listOfFiles = folder.listFiles();
+
+                for (File file : listOfFiles)
+                {
+                    if (file.isFile())
+                    {
+                        String extension = FilenameUtils.getExtension(file.getName());
+                        if (extension.equals("crdownload"))
+                        {
+                            System.out.println("download is incomplete, retrying...");
+                            downloadCompleted = false;
+                        }
+                    }
+                }
+
+                if (downloadCompleted)
+                {
+                    break;
+                }
+
+                Thread.sleep(2000);
+            }
+
+
             driver.quit();
         }
         return null;
