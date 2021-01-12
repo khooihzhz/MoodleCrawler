@@ -25,7 +25,7 @@ public class DownloadFilesTask extends Task<Void> {
             String courseURL = courseMap.get(courseName);
             List<String> listResources = new ArrayList<>();
             listResources.add("li.activity.assign.modtype_assign");
-            //listResources.add("li.activity.resource.modtype_resource");
+            listResources.add("li.activity.resource.modtype_resource");
             listResources.add("li.activity.folder.modtype_folder");
 
             // START DOWNLOAD

@@ -37,7 +37,7 @@
 
 /* LISTVIEW STYLING */
 .list-view {
-    -fx-background-color: #49494a;
+    -fx-background-color: transparent;
     -fx-text-fill: white;
 }
 
@@ -46,27 +46,27 @@
 }
 
 .list-cell:even {
-    -fx-background-color: #49494a;
+    -fx-background-color: #4b545d;
     -fx-background-radius: 30;
 }
 
 .list-cell:odd {
-    -fx-background-color: #5b5b5d;
+    -fx-background-color: #5c656e;
     -fx-background-radius: 30;
 }
 
 .scroll-bar:horizontal {
     -fx-background-radius: 30;
-    -fx-background-color: #49494a;
+    -fx-background-color: transparent;
 }
 
 .scroll-bar:vertical {
     -fx-background-radius: 30;
-    -fx-background-color: #49494a;
+    -fx-background-color: transparent;
 }
 
 .thumb {
-    -fx-background-color: #5b5b5d;
+    -fx-background-color: #343333;
 }
 
 .decrement-button .decrement-arrow {
@@ -90,7 +90,7 @@
 
 .check-box > .box {
     /* background color of unselected checkbox */
-    -fx-background-color: #000000;
+    -fx-background-color: #353535;
 }
 
 .check-box:selected > .box > .mark {

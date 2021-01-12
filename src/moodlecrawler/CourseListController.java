@@ -6,10 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,10 +15,10 @@ import java.util.LinkedHashMap;
 
 public class CourseListController {
 
-    @FXML private Button dlButton;
-    @FXML private VBox vbox;
+    // FX COMPONENTS
     @FXML private ListView<CheckBox> listview;
 
+    // VARIABLES
     public static Parent thirdStage;
 
     public void initialize() {
@@ -33,12 +31,12 @@ public class CourseListController {
             CheckBox checkbox = new CheckBox(name);
 
             // ADD CONTENT INTO THE TABLE COLUMNS
-            //vbox.getChildren().add(checkbox);
             listview.getItems().add(checkbox);
 
             // CREATE A EVENT HANDLER
             EventHandler<ActionEvent> event = event1 -> {
                 if (checkbox.isSelected()) {
+                    // IF SELECTED, ADD INTO THE HASH MAP
                     selectedCourseMap.put(name, courseMap.get(name));
 
                 }
