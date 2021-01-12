@@ -191,7 +191,7 @@ public class DownloadFilesTask extends Task<Void> {
                     break;
                 }
 
-                Thread.sleep(2000);
+                Thread.sleep(5000);
             }
 
 
