@@ -1,21 +1,26 @@
 package moodlecrawler;
 
-/*
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class ArrangeFiles {
     static void arrangeFiles(String courseTitle) {
-        String[] fileList;
-        String downloadPath;
-        String folderPath;
+        String[] fileList;      // ARRAY TO STORE FILE LIST
+        String downloadPath;    // VARIABLE TO STORE DOWNLOAD PATH
+        String folderPath;      // VARIABLE TO STORE NEW FOLDER PATH
 
-        // ELIMINATE SPECIAL CHARACTERS
-        courseTitle = courseTitle.replaceAll("[^a-zA-Z0-9&]", " ");
 
         // STORE DOWNLOAD PATH
-        downloadPath = System.getProperty("user.dir") + "\\externalFiles\\downloadFiles";
+        downloadPath = System.getProperty("user.dir") + "\\DownloadedFiles\\"+courseTitle;
         File downloadFile = new File(downloadPath);
 
         // PATH FOR NEW FOLDER
-        folderPath = System.getProperty("user.dir")+"\\externalFiles\\"+courseTitle;
+        folderPath = System.getProperty("user.dir")+"\\DownloadedFiles\\"+courseTitle;
         File newFolder = new File(folderPath);
         // CREATE DIRECTORY
         newFolder.mkdir();
@@ -24,16 +29,21 @@ public class ArrangeFiles {
         fileList = downloadFile.list();
 
         // STRING PATTERN FOR ASSIGNMENTS AND TUTORIALS
-        String assignPattern = "^.*[Cc]oursework.*$|^.*[Aa]ssignment.*$|^.*[Pp]roject.*$";
-        String tutorialPattern = "^.*[Tt]utorial.*$|^.*[Ll]ab.*$|^.*[Tt]ut.*$";
-        String path = "";
+        String assign = "^.*coursework.*$|^.*assignment.*$|^.*project.*$";
+        Pattern assignPattern = Pattern.compile(assign, Pattern.CASE_INSENSITIVE);
+        String tutorial = "^.*tutorial.*$|^.*lab.*$|^.*tut.*$";
+        Pattern tutorialPattern = Pattern.compile(tutorial, Pattern.CASE_INSENSITIVE);
+
+        String path;
         // MOVE FILES INTO THE NEW DIRECTORY
         for (String filename:fileList) {
-            if (filename.matches(assignPattern)) {
+            Matcher assignMatch = assignPattern.matcher(filename);
+            Matcher tutorialMatch = tutorialPattern.matcher(filename);
+            if (assignMatch.matches()) {
                 // STORE ASSIGNMENT FOLDER PATH
                 path = folderPath+"\\Assignments";
             }
-            else if (filename.matches(tutorialPattern)) {
+            else if (tutorialMatch.matches()) {
                 // STORE TUTORIAL FOLDER PATH
                 path = folderPath+"\\Tutorials";
             }
@@ -55,4 +65,3 @@ public class ArrangeFiles {
     }
 
 }
-*/

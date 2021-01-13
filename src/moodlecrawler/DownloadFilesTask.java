@@ -25,8 +25,8 @@ public class DownloadFilesTask extends Task<Void> {
         for (String courseName : courseMap.keySet()) {
             String courseURL = courseMap.get(courseName);
             List<String> listResources = new ArrayList<>();
-            //listResources.add("li.activity.assign.modtype_assign");
-            //listResources.add("li.activity.resource.modtype_resource");
+            listResources.add("li.activity.assign.modtype_assign");
+            listResources.add("li.activity.resource.modtype_resource");
             listResources.add("li.activity.folder.modtype_folder");
             WebDriver driver = SetupCrawler.setup(courseName);
             SetupCrawler.modifyMoodleCookies(driver);
@@ -194,8 +194,10 @@ public class DownloadFilesTask extends Task<Void> {
                 Thread.sleep(5000);
             }
 
-
             driver.quit();
+
+            // ARRANGE FILES
+            ArrangeFiles.arrangeFiles(ModifiedCourseName);
         }
         return null;
     }

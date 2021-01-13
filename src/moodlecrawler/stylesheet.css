@@ -98,3 +98,16 @@
     -fx-background-color: #f8f6f6;
 }
 /* END OF CHECKBOX STYLING */
+
+/* CONTINUE BUTTON STYLING */
+.continue {
+    -fx-background-color: #505867;
+    -fx-background-radius: 80;
+    -fx-text-fill: #ec8c8c;
+    -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.3), 5, 0.0, 0, 1);
+}
+
+.continue:pressed {
+    -fx-background-color: #636980;
+    -fx-text-fill: #ef4d4d;
+}

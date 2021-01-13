@@ -1,6 +1,5 @@
 package moodlecrawler;
 
-import com.gargoylesoftware.htmlunit.util.Cookie;
 import org.openqa.selenium.WebDriver;
 
 public final class UserWebDriver {
