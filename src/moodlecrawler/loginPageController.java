@@ -2,7 +2,6 @@ package moodlecrawler;
 
 import javafx.animation.RotateTransition;
 import javafx.concurrent.Task;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -11,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -27,6 +27,7 @@ import java.util.*;
 
 public class loginPageController {
     // FX COMPONENTS
+    @FXML private AnchorPane root;
     @FXML private TextField stu_email;
     @FXML private PasswordField stu_password;
     @FXML private Button submitButton;
@@ -34,11 +35,11 @@ public class loginPageController {
 
     // VARIABLE
     public static Set<Cookie> moodleCookies;
-    public static Thread backgroundThread = new Thread(new StartUpThread());
-    public static Parent secondStage;
+    public static Thread backgroundThread;
 
     public void initialize() {
         c.setVisible(false);
+        backgroundThread = new Thread(new StartUpThread());
         backgroundThread.start();
     }
 
@@ -67,9 +68,9 @@ public class loginPageController {
     // LOAD NEXT SCENE
     private void loadNextScene(String fxml) {
         try {
-            secondStage = FXMLLoader.load(Main.class.getResource(fxml));
+            Parent secondStage = FXMLLoader.load(Main.class.getResource(fxml));
             Scene newScene = new Scene(secondStage);
-            Stage currentStage = (Stage) Main.root.getScene().getWindow();
+            Stage currentStage = (Stage) root.getScene().getWindow();
             currentStage.setScene(newScene);
         } catch (IOException e) {
             // do nothing
@@ -77,7 +78,7 @@ public class loginPageController {
     }
 
     // LOGIN
-    public void login(ActionEvent event) throws InterruptedException {
+    public void login() throws InterruptedException {
 
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
@@ -87,6 +88,7 @@ public class loginPageController {
         Task <Void> GetMoodleCookiesTask = new GetMoodleCookiesTask(userEmail, userPassword);
         new Thread(GetMoodleCookiesTask).start();
 
+        // IF FAIL TO LOGIN
         GetMoodleCookiesTask.setOnSucceeded(workerStateEvent -> {
             Window owner = submitButton.getScene().getWindow();
             c.setVisible(false);
@@ -97,6 +99,7 @@ public class loginPageController {
 
         });
 
+        // IF LOGIN SUCCESSFULLY
         GetMoodleCookiesTask.setOnFailed(workerStateEvent -> {
             UserWebDriver userDriver = UserWebDriver.getInstance();
             WebDriver driver = userDriver.getWebDriver();

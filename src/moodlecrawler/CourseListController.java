@@ -8,6 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -16,10 +17,9 @@ import java.util.LinkedHashMap;
 public class CourseListController {
 
     // FX COMPONENTS
+    @FXML private AnchorPane root;
     @FXML private ListView<CheckBox> listview;
 
-    // VARIABLES
-    public static Parent thirdStage;
 
     public void initialize() {
         UserCookie userCookie = UserCookie.getInstance();
@@ -51,16 +51,16 @@ public class CourseListController {
     }
 
     // DOWNLOAD BUTTON FUNCTION
-    public void download(ActionEvent event) {
+    public void download() {
         loadNextScene("progresspage.fxml");
     }
 
     // LOAD TO NEXT SCENE FUNCTION
     private void loadNextScene(String fxml) {
         try {
-            thirdStage = FXMLLoader.load(Main.class.getResource(fxml));
+            Parent thirdStage = FXMLLoader.load(Main.class.getResource(fxml));
             Scene newScene = new Scene(thirdStage);
-            Stage currentStage = (Stage) loginPageController.secondStage.getScene().getWindow();
+            Stage currentStage = (Stage) root.getScene().getWindow();
             currentStage.setScene(newScene);
         } catch (IOException e) {
             // do nothing

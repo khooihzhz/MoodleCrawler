@@ -28,7 +28,7 @@ public class SetupCrawler {
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.EAGER);
         options.setExperimentalOption("prefs", prefs);
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
 
         return new ChromeDriver(options);
     }

@@ -9,12 +9,9 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    // Global variable for root scene.
-    public static Parent root;
-
     @Override
     public void start(Stage primaryStage) throws Exception {
-        root = FXMLLoader.load(getClass().getResource("loginpage.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("loginpage.fxml"));
         primaryStage.setTitle("Moodle Crawler");
         primaryStage.getIcons().add(new Image("resources/spiderweb.png"));
         primaryStage.setResizable(false);

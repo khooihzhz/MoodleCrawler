@@ -1,12 +1,16 @@
 /*SIGN IN BUTTON STYLING*/
-.sign-in {
+.sign-in-btn {
     -fx-background-color: #7A85AD;
     -fx-background-radius: 80;
     -fx-text-fill: white;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 }
 
-.sign-in:pressed {
+.sign-in-btn:hover {
+    -fx-background-color: #616a8a;
+}
+
+.sign-in-btn:pressed {
     -fx-background-color: #394055;
     -fx-text-fill: #F8F9F9;
 }
@@ -23,15 +27,19 @@
 }
 
 /* DOWNLOAD BUTTON STYLING */
-.download {
+.download_btn {
     -fx-background-color: #616D7E;
     -fx-background-radius: 80;
     -fx-text-fill: #ff9797;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
 }
 
-.download:pressed {
-    -fx-background-color: #7782A2;
+.download_btn:hover {
+    -fx-background-color: #677786;
+}
+
+.download_btn:pressed {
+    -fx-background-color: #6f8191;
     -fx-text-fill: #ff5a5a;
 }
 
@@ -100,14 +108,59 @@
 /* END OF CHECKBOX STYLING */
 
 /* CONTINUE BUTTON STYLING */
-.continue {
+.continue_btn {
     -fx-background-color: #505867;
     -fx-background-radius: 80;
     -fx-text-fill: #ec8c8c;
     -fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.3), 5, 0.0, 0, 1);
 }
 
-.continue:pressed {
+.continue_btn:hover {
+    -fx-background-color: #596273;
+}
+
+.continue_btn:pressed {
     -fx-background-color: #636980;
     -fx-text-fill: #ef4d4d;
 }
+/* END OF CONTINUE BUTTON STYLING */
+
+/* TREEVIEW STYLING */
+.tree-view, .tree-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
+.tree-cell:selected {
+    -fx-font-weight: bold ;
+}
+
+.tree-cell {
+    -fx-padding: 0.75em 0em 0.75em 0em ;
+}
+
+/* HOME, LOGOUT, EXIT BUTTON STYLING */
+.btn_exit, .btn_home, .btn_logout {
+    -fx-background-color: #34495E;
+    -fx-text-fill: white;
+}
+
+.btn_home:hover, .btn_logout:hover {
+    -fx-background-color: #325a7c;
+}
+
+.btn_home:pressed, .btn_logout:pressed {
+    -fx-background-color: #4a81ac;
+    -fx-text-fill: #e3e3e3;
+}
+
+.btn_exit:hover {
+    -fx-background-color: #325a7c;
+    -fx-text-fill: #d70808;
+}
+
+.btn_exit:pressed {
+    -fx-background-color: #4a81ac;
+    -fx-text-fill: #d70808;
+}
+

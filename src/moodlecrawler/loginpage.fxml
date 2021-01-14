@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moodlecrawler.loginPageController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moodlecrawler.loginPageController">
     <children>
         <SplitPane dividerPositions="0.5006501950585176" layoutX="123.0" layoutY="40.0" prefHeight="505.0" prefWidth="771.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
@@ -91,7 +91,7 @@
                                 <Insets />
                             </opaqueInsets>
                         </PasswordField>
-                        <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" styleClass="sign-in" stylesheets="@stylesheet.css" text="Sign In" textFill="#f8f4f4">
+                        <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" styleClass="sign-in-btn" stylesheets="@stylesheet.css" text="Sign In" textFill="#f8f4f4">
                             <font>
                                 <Font name="Arial Bold" size="14.0" />
                             </font>
