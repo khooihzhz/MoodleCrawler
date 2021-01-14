@@ -64,7 +64,7 @@ public class ProgressController {
         rt.play();
     }
 
-    public void setContButton() { loadNextScene("viewfile.fxml"); System.out.println("End");}
+    public void setContButton() { loadNextScene("viewfile.fxml"); }
 
     // LOAD TO NEXT SCENE FUNCTION
     private void loadNextScene(String fxml) {
