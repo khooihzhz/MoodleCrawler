@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 public class SetupCrawler {
+    // Setup a new Crawler
     public static WebDriver setup(String SaveDirectory) {
         SaveDirectory = SaveDirectory.replaceAll("[^a-zA-Z0-9&]", " ");
 
@@ -33,6 +34,7 @@ public class SetupCrawler {
     }
 
    public static void modifyMoodleCookies(WebDriver driver) {
+
         driver.get("https://elearning.usm.my/sidang2021/");
         // REMOVE ALL COOKIES AND ADD NEW ONE
         driver.manage().deleteAllCookies();
@@ -47,6 +49,4 @@ public class SetupCrawler {
         // refresh
         driver.get("https://elearning.usm.my/sidang2021/");
     }
-
-
 }

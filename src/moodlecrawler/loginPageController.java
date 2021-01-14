@@ -32,7 +32,7 @@ public class loginPageController {
     @FXML private Button submitButton;
     @FXML private Circle c;
 
-    // variables
+    // VARIABLE
     public static Set<Cookie> moodleCookies;
     public static Thread backgroundThread = new Thread(new StartUpThread());
     public static Parent secondStage;
@@ -115,10 +115,12 @@ public class loginPageController {
         WebDriver driver = userDriver.getWebDriver();
 
         WebDriverWait wait = new WebDriverWait(driver, 2);
+
         // ----- START FIND COURSE LIST ------
         // wait for page load
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a.courselist_course.scrollable")));
         List<WebElement> courseLinks = driver.findElements(By.cssSelector("a.courselist_course.scrollable"));
+
         // STEP 6 : LOOP THROUGH EACH LINK
         // REMEMBER COURSE LINKS
         for (WebElement course : courseLinks) {
@@ -126,7 +128,7 @@ public class loginPageController {
             // STORE COURSE NAME AND URL
             courseMap.put(course.getText(), courseURL);
         }
-        // quit driver everytime we finish a function
+        // Quit driver everytime we finish a function
         UserCookie userCookie = UserCookie.getInstance();
         userCookie.setCourseMap(courseMap);
         driver.quit();
