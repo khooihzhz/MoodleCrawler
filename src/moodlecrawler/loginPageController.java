@@ -78,6 +78,7 @@ public class loginPageController {
 
     // LOGIN
     public void login(ActionEvent event) throws InterruptedException {
+
         String userEmail = stu_email.getText();
         String userPassword = stu_password.getText();
         backgroundThread.join();
@@ -93,6 +94,7 @@ public class loginPageController {
                     "Invalid email or password!\nPlease try again to login.");
             stu_email.clear();
             stu_password.clear();
+
         });
 
         GetMoodleCookiesTask.setOnFailed(workerStateEvent -> {
