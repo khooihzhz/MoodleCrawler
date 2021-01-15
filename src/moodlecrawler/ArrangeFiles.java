@@ -8,7 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ArrangeFiles {
-    static void arrangeFiles(String courseTitle) {
+    public static void arrangeFiles(String courseTitle) {
         String[] fileList;      // ARRAY TO STORE FILE LIST
         String downloadPath;    // VARIABLE TO STORE DOWNLOAD PATH
         String folderPath;      // VARIABLE TO STORE NEW FOLDER PATH
@@ -62,5 +62,4 @@ public class ArrangeFiles {
             }
         }
     }
-
 }
