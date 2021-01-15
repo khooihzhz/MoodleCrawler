@@ -92,7 +92,6 @@ public class DownloadFilesTask extends Task<Void> {
 
                 // FIRST WAVE OF LINKS
                 for (String urls : listLinks) {
-                    System.out.println(urls);
                     driver.get(urls);
                     // DECLARE
                     WebElement mainTag;

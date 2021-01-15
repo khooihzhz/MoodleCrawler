@@ -18,11 +18,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="505.0" prefWidth="771.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moodlecrawler.loginPageController">
+<AnchorPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="510.0" prefWidth="775.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="moodlecrawler.loginPageController">
     <children>
-        <SplitPane dividerPositions="0.5006501950585176" layoutX="123.0" layoutY="40.0" prefHeight="505.0" prefWidth="771.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <SplitPane dividerPositions="0.5006501950585176" layoutX="123.0" layoutY="40.0" prefHeight="510.0" prefWidth="775.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <items>
-                <AnchorPane minHeight="0.0" minWidth="382.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: linear-gradient(to left, #536976, #292e49);">
+                <AnchorPane minHeight="0.0" minWidth="382.0" prefHeight="508.0" prefWidth="419.0" style="-fx-background-color: linear-gradient(to left, #536976, #292e49);">
                     <children>
                         <Circle layoutX="40.0" layoutY="252.0" radius="48.0" stroke="#e8dcdc00" strokeType="INSIDE">
                             <fill>
@@ -37,7 +37,7 @@
                                 <Glow />
                             </effect>
                         </Circle>
-                        <Circle layoutX="308.0" layoutY="174.0" radius="43.0" stroke="#f5f0f000" strokeType="INSIDE">
+                        <Circle layoutX="327.0" layoutY="167.0" radius="43.0" stroke="#f5f0f000" strokeType="INSIDE">
                             <fill>
                                 <RadialGradient centerX="0.2777777989705404" centerY="0.5" radius="0.5">
                                     <stops>
@@ -56,17 +56,17 @@
                                 <Glow />
                             </effect>
                         </Text>
-                        <Text fill="#f0e9e9" layoutX="24.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Download your notes, tutorials and assignments">
+                        <Text fill="#f0e9e9" layoutX="26.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Download your notes, tutorials and assignments">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Text>
-                        <Text fill="#faf5f5" layoutX="24.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="with the easiest way.">
+                        <Text fill="#faf5f5" layoutX="26.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="with the easiest way.">
                             <font>
                                 <Font name="System Bold" size="14.0" />
                             </font>
                         </Text>
-                        <Text fill="#f5efef" layoutX="189.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to continue access">
+                        <Text fill="#f5efef" layoutX="194.0" layoutY="304.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sign in to continue access">
                             <font>
                                 <Font name="Arial Bold" size="12.0" />
                             </font>
@@ -75,23 +75,23 @@
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="381.0" prefHeight="160.0" prefWidth="100.0">
                     <children>
-                        <Label layoutX="138.0" layoutY="95.0" prefHeight="43.0" prefWidth="106.0" text="LOGIN" textAlignment="JUSTIFY" textFill="#030303">
+                        <Label layoutX="149.0" layoutY="93.0" prefHeight="43.0" prefWidth="86.0" text="LOGIN" textAlignment="JUSTIFY" textFill="#030303" AnchorPane.leftAnchor="149.0" AnchorPane.rightAnchor="148.33333333333331">
                             <font>
                                 <Font name="Arial Black" size="23.0" />
                             </font>
                         </Label>
-                        <AnchorPane layoutX="152.0" layoutY="133.0" prefHeight="6.0" prefWidth="52.0" style="-fx-background-color: #7A85AD;" />
-                        <TextField fx:id="stu_email" layoutX="57.0" layoutY="220.0" onAction="#login" prefHeight="27.0" prefWidth="241.0" promptText="USM Email" styleClass="field" stylesheets="@stylesheet.css">
+                        <AnchorPane layoutX="166.0" layoutY="134.0" prefHeight="6.0" prefWidth="52.0" style="-fx-background-color: #7A85AD;" />
+                        <TextField fx:id="stu_email" layoutX="71.0" layoutY="219.0" onAction="#login" prefHeight="27.0" prefWidth="241.0" promptText="USM Email" styleClass="field" stylesheets="@stylesheet.css" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="70.99999999999997">
                             <font>
                                 <Font name="Arial" size="12.0" />
                             </font>
                         </TextField>
-                        <PasswordField fx:id="stu_password" layoutX="57.0" layoutY="269.0" onAction="#login" prefHeight="25.0" prefWidth="241.0" promptText="Password" styleClass="field" stylesheets="@stylesheet.css">
+                        <PasswordField fx:id="stu_password" layoutX="71.0" layoutY="269.0" onAction="#login" prefHeight="25.0" prefWidth="241.0" promptText="Password" styleClass="field" stylesheets="@stylesheet.css" AnchorPane.leftAnchor="71.0" AnchorPane.rightAnchor="70.99999999999997">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>
                         </PasswordField>
-                        <Button fx:id="submitButton" layoutX="105.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" styleClass="sign-in-btn" stylesheets="@stylesheet.css" text="Sign In" textFill="#f8f4f4">
+                        <Button fx:id="submitButton" layoutX="119.0" layoutY="340.0" mnemonicParsing="false" onAction="#login" prefHeight="26.0" prefWidth="145.0" styleClass="sign-in-btn" stylesheets="@stylesheet.css" text="Sign In" textFill="#f8f4f4" AnchorPane.leftAnchor="119.0" AnchorPane.rightAnchor="118.99999999999997">
                             <font>
                                 <Font name="Arial Bold" size="14.0" />
                             </font>
@@ -102,22 +102,22 @@
                                 <Blend />
                             </effect>
                         </Button>
-                        <ImageView fitHeight="27.0" fitWidth="29.0" layoutX="230.0" layoutY="104.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="27.0" fitWidth="29.0" layoutX="235.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../resources/login.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="23.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="27.0" layoutX="34.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../resources/user.png" />
                             </image>
                         </ImageView>
-                        <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="23.0" layoutY="269.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="26.0" fitWidth="26.0" layoutX="33.0" layoutY="269.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../resources/password.png" />
                             </image>
                         </ImageView>
-                        <Circle fx:id="c" fill="#2f79bf00" layoutX="276.0" layoutY="354.0" radius="14.0" stroke="#2e2e2e" strokeType="INSIDE" style="-fx-stroke-dash-array: 10;" />
+                        <Circle fx:id="c" fill="#2f79bf00" layoutX="285.0" layoutY="353.0" radius="14.0" stroke="#2e2e2e" strokeType="INSIDE" style="-fx-stroke-dash-array: 10;" />
                     </children>
                 </AnchorPane>
             </items>

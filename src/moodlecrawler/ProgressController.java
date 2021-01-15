@@ -1,15 +1,20 @@
 package moodlecrawler;
 
+import eu.hansolo.enzo.notification.Notification;
 import javafx.animation.Animation;
+import javafx.animation.PathTransition;
 import javafx.animation.RotateTransition;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Polyline;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -36,6 +41,12 @@ public class ProgressController {
         setRotate(c2, false, -360, 15);
         setRotate(c3, false, 360, 10);
         setRotate(c4, false, -360, 15);
+        Polyline polyline1 = new Polyline();
+        polyline1.getPoints().addAll(0.0, 0.0, 400.0, 150.0);
+        Polyline polyline2 = new Polyline();
+        polyline2.getPoints().addAll(0.0, 0.0, 500.0, 200.0);
+        Polyline polyline3 = new Polyline();
+        polyline3.getPoints().addAll(0.0, 0.0, 400.0, 200.0);
 
 
         // START DOWNLOADING THREAD
@@ -47,10 +58,10 @@ public class ProgressController {
         {
             dlText.setVisible(false);
             contButton.setVisible(true);
+            Notification.Notifier.setPopupLocation(null, Pos.BOTTOM_RIGHT );
+            Notification.Notifier.INSTANCE.notifySuccess("Download Completed",
+                    "Files are saved to DownloadedFile Folder");
         });
-
-        downloadTask.setOnFailed(workerStateEvent -> System.out.println("Something went wrong"));
-
     }
 
     private void setRotate(Circle c, boolean reverse, int angle, int duration) {
@@ -59,8 +70,8 @@ public class ProgressController {
         rt.setAutoReverse(reverse);
         rt.setByAngle(angle);
         rt.setDelay(Duration.seconds(0));
-        rt.setRate(3);
         rt.setCycleCount(Animation.INDEFINITE);
+        rt.setRate(3);
         rt.play();
     }
 

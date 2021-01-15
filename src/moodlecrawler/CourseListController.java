@@ -25,6 +25,7 @@ public class CourseListController {
         UserCookie userCookie = UserCookie.getInstance();
         LinkedHashMap<String, String> courseMap = userCookie.getCourseMap();
         LinkedHashMap<String, String> selectedCourseMap = userCookie.getSelectedCourseMap();
+        selectedCourseMap.clear();
 
         for (String name : courseMap.keySet()) {
             // DECLARE CHECKBOX OBJECT

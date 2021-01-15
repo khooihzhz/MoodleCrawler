@@ -15,7 +15,7 @@ public class Main extends Application {
         primaryStage.setTitle("Moodle Crawler");
         primaryStage.getIcons().add(new Image("resources/spiderweb.png"));
         primaryStage.setResizable(false);
-        primaryStage.setScene(new Scene(root, 771, 505));
+        primaryStage.setScene(new Scene(root, 775, 510));
         primaryStage.show();
     }
 
